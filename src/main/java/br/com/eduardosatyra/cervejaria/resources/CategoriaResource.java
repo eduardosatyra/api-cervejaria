@@ -4,6 +4,8 @@ import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -39,14 +41,16 @@ public class CategoriaResource {
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
-	public ResponseEntity<Void> insert(@RequestBody Categoria obj) {
+	public ResponseEntity<Void> insert(@Valid @RequestBody CategoriaDTO objDto) {
+		Categoria obj = categoriaService.parseToDto(objDto);
 		obj = categoriaService.insert(obj);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
 		return ResponseEntity.created(uri).build();
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-	public ResponseEntity<Void> update(@RequestBody Categoria obj, @PathVariable Integer id) {
+	public ResponseEntity<Void> update(@Valid @RequestBody CategoriaDTO objDto, @PathVariable Integer id) {
+		Categoria obj = categoriaService.parseToDto(objDto);
 		obj.setId(id);
 		obj = categoriaService.update(obj);
 		return ResponseEntity.noContent().build();
@@ -67,14 +71,15 @@ public class CategoriaResource {
 	}
 
 	@RequestMapping(value = "/page", method = RequestMethod.GET)
-	public ResponseEntity<Page<CategoriaDTO>> findPage(
-			@RequestParam(value = "page", defaultValue = "0") Integer page,
+	public ResponseEntity<Page<CategoriaDTO>> findPage(@RequestParam(value = "page", defaultValue = "0") Integer page,
 			@RequestParam(value = "linesPerPage", defaultValue = "24") Integer linesPerPage,
 			@RequestParam(value = "orderBY", defaultValue = "nome") String orderBy,
 			@RequestParam(value = "direction", defaultValue = "ASC") String direction) {
-			//requisiçoes = 'value'?param=paramData&...
+		// requisiçoes = 'value'?param=paramData&...
 		Page<Categoria> list = categoriaService.findPage(page, linesPerPage, orderBy, direction);
-		Page<CategoriaDTO> categoriaDto = list.map(obj -> new CategoriaDTO(obj)); // Page do spring ja é "JAVA 8 COMPLIANCE", não necessita o stream e a converção
+		Page<CategoriaDTO> categoriaDto = list.map(obj -> new CategoriaDTO(obj)); // Page do spring ja é "JAVA 8
+																					// COMPLIANCE", não necessita o
+																					// stream e a converção
 		return ResponseEntity.ok(categoriaDto);
 	}
 }
