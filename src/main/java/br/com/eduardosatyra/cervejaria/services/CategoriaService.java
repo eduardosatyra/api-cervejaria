@@ -1,5 +1,6 @@
 package br.com.eduardosatyra.cervejaria.services;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,14 +49,26 @@ public class CategoriaService {
 		return repo.save(obj);
 	}
 
+	/**
+	 * 
+	 * @param id
+	 */
 	public void delete(Integer id) {
 		find(id);
 
 		try {
 			repo.deleteById(id);
 		} catch (DataIntegrityViolationException e) {
-			throw new DataIntegrityException("Não é possível deletar essa categoria, exitem produtos associados a ela.");
+			throw new DataIntegrityException(
+					"Não é possível deletar essa categoria, exitem produtos associados a ela.");
 		}
+	}
+
+	/**
+	 * @return
+	 */
+	public List<Categoria> findAll() {
+		return repo.findAll();
 	}
 
 }
