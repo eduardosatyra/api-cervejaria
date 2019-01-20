@@ -6,11 +6,14 @@ import javax.validation.constraints.NotEmpty;
 import org.hibernate.validator.constraints.Length;
 
 import br.com.eduardosatyra.cervejaria.domain.Cliente;
+import br.com.eduardosatyra.cervejaria.services.validation.ClienteUpdate;
 
 /**
  * @author eduardosatyra
  *
  */
+
+@ClienteUpdate
 public class ClienteDTO {
 
 	private Integer id;
