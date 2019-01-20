@@ -10,14 +10,21 @@ import java.util.List;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
+import br.com.eduardosatyra.cervejaria.domain.Cliente;
 import br.com.eduardosatyra.cervejaria.domain.enums.TipoCliente;
 import br.com.eduardosatyra.cervejaria.dto.ClienteNewDTO;
+import br.com.eduardosatyra.cervejaria.repositories.ClienteRepository;
 import br.com.eduardosatyra.cervejaria.resources.exceptions.FieldMessage;
 import br.com.eduardosatyra.cervejaria.services.validation.br.BR;
 
 public class ClienteInsertValidator implements ConstraintValidator<ClienteInsert, ClienteNewDTO> {
+	
+	@Autowired
+	private ClienteRepository clienteRepository;
+	
 	@Override
-
 	public void initialize(ClienteInsert ann) {
 	}
 
@@ -31,6 +38,11 @@ public class ClienteInsertValidator implements ConstraintValidator<ClienteInsert
 		}
 		if(objDto.getTipo().equals(TipoCliente.PESSOA_JURIDICA.getCod()) && !BR.isValidCNPJ(objDto.getCpfOuCnpj())) {
 			list.add(new FieldMessage("cpfOuCnpj", "CNPJ invalido"));
+		}
+		Cliente cliente = clienteRepository.findByEmail(objDto.getEmail());
+		
+		if(cliente != null) {
+			list.add(new FieldMessage("email", "E-mail já cadastrado"));
 		}
 		
 		// inclua os testes aqui, inserindo erros na lista
