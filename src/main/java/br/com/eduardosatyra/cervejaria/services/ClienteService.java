@@ -34,7 +34,7 @@ public class ClienteService {
 
 	@Autowired
 	private ClienteRepository clienteRepository;
-	
+
 	@Autowired
 	private EnderecoRepository enderecoRepository;
 
@@ -47,7 +47,7 @@ public class ClienteService {
 
 	public Cliente insert(Cliente obj) {
 		obj.setId(null);
-		obj =  clienteRepository.save(obj);
+		obj = clienteRepository.save(obj);
 		enderecoRepository.saveAll(obj.getEnderecos());
 		return obj;
 	}
@@ -60,11 +60,10 @@ public class ClienteService {
 
 	public void delete(Integer id) {
 		find(id);
-
 		try {
 			clienteRepository.deleteById(id);
 		} catch (DataIntegrityViolationException e) {
-			throw new DataIntegrityException("Não é possível deletar porque a entidades relacionadas");
+			throw new DataIntegrityException("Não é possível deletar porque a pedidos relacionadas");
 		}
 	}
 
