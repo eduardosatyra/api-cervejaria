@@ -1,4 +1,4 @@
-package br.com.eduardosatyra.cervejaria.domain.dto;
+package br.com.eduardosatyra.cervejaria.dto;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
