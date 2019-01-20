@@ -49,6 +49,11 @@ public class ClienteResource {
 		return ResponseEntity.ok(cliente);
 	}
 
+	/**
+	 * 
+	 * @param objDto
+	 * @return
+	 */
 	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<Void> insert(@Valid @RequestBody ClienteNewDTO objDto) {
 		Cliente obj = clienteService.parseToDto(objDto);
@@ -57,6 +62,12 @@ public class ClienteResource {
 		return ResponseEntity.created(uri).build();
 	}
 
+	/**
+	 * 
+	 * @param objDto
+	 * @param id
+	 * @return
+	 */
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
 	public ResponseEntity<Void> update(@Valid @RequestBody ClienteDTO objDto, @PathVariable Integer id) {
 		Cliente obj = clienteService.parseToDto(objDto);
@@ -65,6 +76,11 @@ public class ClienteResource {
 		return ResponseEntity.noContent().build();
 	}
 
+	/**
+	 * 
+	 * @param id
+	 * @return
+	 */
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity<Void> delete(@PathVariable Integer id) {
 		clienteService.delete(id);
@@ -72,6 +88,10 @@ public class ClienteResource {
 
 	}
 
+	/**
+	 * 
+	 * @return
+	 */
 	@RequestMapping(method = RequestMethod.GET)
 	public ResponseEntity<List<ClienteDTO>> findAll() {
 		List<Cliente> list = clienteService.findAll();
@@ -79,6 +99,14 @@ public class ClienteResource {
 		return ResponseEntity.ok(categoriaDto);
 	}
 
+	/**
+	 * 
+	 * @param page
+	 * @param linesPerPage
+	 * @param orderBy
+	 * @param direction
+	 * @return
+	 */
 	@RequestMapping(value = "/page", method = RequestMethod.GET)
 	public ResponseEntity<Page<ClienteDTO>> findPage(@RequestParam(value = "page", defaultValue = "0") Integer page,
 			@RequestParam(value = "linesPerPage", defaultValue = "24") Integer linesPerPage,
