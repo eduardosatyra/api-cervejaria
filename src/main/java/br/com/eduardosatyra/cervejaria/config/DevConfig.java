@@ -9,6 +9,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
 import br.com.eduardosatyra.cervejaria.services.DBService;
+import br.com.eduardosatyra.cervejaria.services.EmailService;
+import br.com.eduardosatyra.cervejaria.services.SmtpEmailService;
 
 /**
  * @author eduardosatyra
@@ -33,5 +35,10 @@ public class DevConfig {
 
 		dbService.instantiateTestDataBase();
 		return true;
+	}
+
+	@Bean
+	public EmailService emailService() {
+		return new SmtpEmailService();
 	}
 }
