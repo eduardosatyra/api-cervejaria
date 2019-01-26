@@ -11,6 +11,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import br.com.eduardosatyra.cervejaria.domain.Cidade;
@@ -37,6 +38,9 @@ public class ClienteService {
 
 	@Autowired
 	private EnderecoRepository enderecoRepository;
+	
+	@Autowired
+	private BCryptPasswordEncoder bCryptPasswordEncoder;
 
 	public Cliente find(Integer id) {
 		Optional<Cliente> obj = clienteRepository.findById(id);
@@ -77,12 +81,12 @@ public class ClienteService {
 	}
 
 	public Cliente parseToDto(ClienteDTO clienteDto) {
-		return new Cliente(clienteDto.getId(), clienteDto.getNome(), clienteDto.getEmail(), null, null);
+		return new Cliente(clienteDto.getId(), clienteDto.getNome(), clienteDto.getEmail(), null, null, null);
 	}
 
 	public Cliente parseToDto(ClienteNewDTO clienteDto) {
 		Cliente cliente = new Cliente(null, clienteDto.getNome(), clienteDto.getEmail(), clienteDto.getCpfOuCnpj(),
-				TipoCliente.toEnum(clienteDto.getTipo()));
+				TipoCliente.toEnum(clienteDto.getTipo()), bCryptPasswordEncoder.encode(clienteDto.getSenha()));
 		Cidade cid = new Cidade(clienteDto.getCidadeId(), null, null);
 		Endereco end = new Endereco(null, clienteDto.getLogradouro(), clienteDto.getNumero(),
 				clienteDto.getComplemento(), clienteDto.getBairro(), clienteDto.getCep(), cliente, cid);
