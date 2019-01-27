@@ -80,11 +80,11 @@ public class ClienteService {
 		return clienteRepository.findAll(pageRequest);
 	}
 
-	public Cliente parseToDto(ClienteDTO clienteDto) {
+	public Cliente parseDtoToCliente(ClienteDTO clienteDto) {
 		return new Cliente(clienteDto.getId(), clienteDto.getNome(), clienteDto.getEmail(), null, null, null);
 	}
 
-	public Cliente parseToDto(ClienteNewDTO clienteDto) {
+	public Cliente parseDtoToNewCliente(ClienteNewDTO clienteDto) {
 		Cliente cliente = new Cliente(null, clienteDto.getNome(), clienteDto.getEmail(), clienteDto.getCpfOuCnpj(),
 				TipoCliente.toEnum(clienteDto.getTipo()), bCryptPasswordEncoder.encode(clienteDto.getSenha()));
 		Cidade cid = new Cidade(clienteDto.getCidadeId(), null, null);

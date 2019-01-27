@@ -56,7 +56,7 @@ public class ClienteResource {
 	 */
 	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<Void> insert(@Valid @RequestBody ClienteNewDTO objDto) {
-		Cliente obj = clienteService.parseToDto(objDto);
+		Cliente obj = clienteService.parseDtoToNewCliente(objDto);
 		obj = clienteService.insert(obj);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(obj.getId()).toUri();
 		return ResponseEntity.created(uri).build();
@@ -70,7 +70,7 @@ public class ClienteResource {
 	 */
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
 	public ResponseEntity<Void> update(@Valid @RequestBody ClienteDTO objDto, @PathVariable Integer id) {
-		Cliente obj = clienteService.parseToDto(objDto);
+		Cliente obj = clienteService.parseDtoToCliente(objDto);
 		obj.setId(id);
 		obj = clienteService.update(obj);
 		return ResponseEntity.noContent().build();
